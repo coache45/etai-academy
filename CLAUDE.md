@@ -1,17 +1,27 @@
-# ONE Health — Claude Code Project Instructions
+# The AI Academy — Claude Code Project Instructions
 
 ## Project
-- **Name**: ET AI ONE Health
-- **Stack**: Next.js 14, TypeScript, Tailwind CSS, Supabase, Stripe
-- **Repo**: github.com/coache45/etai-one-health
+- **Name**: The AI Academy (ET AI, LLC)
+- **Stack**: Next.js 14, TypeScript, Tailwind CSS, Supabase
+- **Repo**: github.com/coache45/etai-academy
 - **Source dir**: `src/` (all app code lives under `src/`, path alias `@/*` → `./src/*`)
-- **Production**: etai-one-health.vercel.app (main branch)
-- **Brand**: Navy #1B2A4A, Gold #C9A84C
+- **Production**: etai-academy.vercel.app (main branch)
+- **Brand**: Navy #1B2A4A, Gold #C9A84C — "Bringing AI Down to Earth"
+
+## What this app is
+The AI Academy is the public learning + content hub:
+- `/` — marketing / platform hub landing
+- `/guides`, `/guides/[slug]` — ELI5 Guides (public, no auth)
+- `/podcast` — the O-Spot podcast page
+- `/login`, `/signup`, `/onboarding` — auth flow
+
+**ONE Health is a SEPARATE application** living at etai-one-health.vercel.app (repo `etai-one-health`). The Academy links out to it; the dashboard/app surface is NOT part of this repo. Do not re-introduce `(dashboard)`, couples, or health/coach/studio routes here.
 
 ## Branch Protocol
-- **main** = production. Live app with Stripe billing and real users. NEVER force push.
+- **main** = production. NEVER force push.
 - Feature branches merge into main via PR only.
 - Always create branches from `origin/main` (not from other feature branches).
+- Git identity: commit with `git config user.email "coache45@gmail.com"`.
 
 ## Pre-Merge Verification Protocol (MANDATORY)
 
@@ -45,12 +55,17 @@ Do NOT blame external systems. Diagnose and fix.
 - Commits are confirmed on the remote branch
 
 ## Route Conventions
-- `src/app/(dashboard)/` — auth-protected pages (route group, no URL segment)
-- `src/app/guides/` — public pages (no auth required, added to middleware publicPaths)
-- Do NOT create pages in `(dashboard)` that conflict with root-level routes (e.g., `/(dashboard)/guides` and `/guides` both resolve to `/guides`)
+- `src/app/page.tsx` — marketing hub landing
+- `src/app/guides/` — public ELI5 guides (added to middleware publicPaths)
+- `src/app/podcast/` — O-Spot podcast page
+- `src/app/(auth)/` — login / signup / onboarding (route group, no URL segment)
+- `src/app/auth/callback` — Supabase auth callback
+- `src/app/api/guides/` — guide CRUD + generation
+- `src/app/api/_archived/` — archived enterprise routes (kept, not wired)
 
 ## Key Files
-- `src/components/layout/Sidebar.tsx` — main navigation (add new nav items here)
 - `middleware.ts` — auth redirects and public path allowlist
 - `next.config.js` — has `ignoreBuildErrors: true` and `ignoreDuringBuilds: true`
-- `src/lib/supabase/admin.ts` — service-role client for Guardian/USM operations
+- `src/lib/supabase/` — Supabase clients (client / server / admin)
+- `src/lib/guides/` — guide queries
+- `src/lib/podcast/` — podcast config + RSS feed parsing

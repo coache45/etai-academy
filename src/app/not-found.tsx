@@ -16,9 +16,9 @@ export default function NotFound() {
         <p className="text-sm text-gray-400 mb-8">
           But your health journey is right where you left it.
         </p>
-        <Link href="/dashboard">
+        <Link href="/">
           <Button variant="gold" size="lg">
-            Back to Dashboard
+            Back to Home
           </Button>
         </Link>
       </div>
