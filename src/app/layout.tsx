@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
+import PoweredByBadge from '@/components/brand/PoweredByBadge'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -26,6 +27,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         {children}
+        <footer className="flex justify-center py-6">
+          <PoweredByBadge />
+        </footer>
         <Toaster
           position="top-right"
           toastOptions={{
