@@ -58,7 +58,7 @@ const ecosystemApps = [
     title: 'ONE Health',
     description:
       'AI coaching, sleep tracking, stress mastery, and the first couples health dashboard. Your body, your data, your coach.',
-    href: 'https://et-ai-one-health.vercel.app',
+    href: 'https://etai-one-health.vercel.app',
     color: 'bg-rose-500/10 text-rose-600 dark:text-rose-400',
     external: true,
     status: 'Live',
