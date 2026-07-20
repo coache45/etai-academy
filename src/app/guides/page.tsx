@@ -81,13 +81,13 @@ export default async function AcademyPage({ searchParams }: PageProps) {
                   <path d="M8 2L14 6V14H2V6L8 2Z" fill="#1B2A4A" />
                 </svg>
               </div>
-              <span className="text-sm font-bold text-[#1B2A4A]">ET AI ONE Health</span>
+              <span className="text-sm font-bold text-[#1B2A4A]">ET AI Academy</span>
             </Link>
             <Link
-              href="/dashboard"
+              href="/guides"
               className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
             >
-              Dashboard
+              Guides
             </Link>
           </div>
         </div>

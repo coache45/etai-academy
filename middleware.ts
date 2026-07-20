@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   // Redirect logged-in users away from auth pages
   if (user && (pathname === '/login' || pathname === '/signup')) {
     const dashUrl = request.nextUrl.clone()
-    dashUrl.pathname = '/dashboard'
+    dashUrl.pathname = '/guides'
     return NextResponse.redirect(dashUrl)
   }
 

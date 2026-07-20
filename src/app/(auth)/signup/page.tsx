@@ -58,16 +58,16 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 bg-[#F5C842] rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#C9A84C] rounded-xl flex items-center justify-center">
               <Zap className="w-6 h-6 text-[#1B2A4A]" />
             </div>
-            <span className="font-bold text-xl text-[#1B2A4A] dark:text-white">ET AI ONE</span>
+            <span className="font-bold text-xl text-[#1B2A4A] dark:text-white">ET AI Academy</span>
           </Link>
           <h1 className="text-2xl font-bold text-[#1B2A4A] dark:text-white">
             Let&apos;s build something.
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Your health. Your way. Starting today.
+            Learn anything. Understand everything. Free to start.
           </p>
         </div>
 

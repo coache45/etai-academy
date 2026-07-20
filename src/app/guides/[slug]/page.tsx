@@ -101,8 +101,8 @@ export default async function GuideViewerPage({ params }: PageProps) {
             </svg>
             Academy
           </Link>
-          <Link href="/dashboard" className="text-xs font-medium text-[#C9A84C] hover:underline">
-            ET AI ONE Health
+          <Link href="/guides" className="text-xs font-medium text-[#C9A84C] hover:underline">
+            ET AI Academy
           </Link>
         </div>
       </header>
@@ -173,7 +173,7 @@ export default async function GuideViewerPage({ params }: PageProps) {
       {/* Footer */}
       <footer className="border-t border-[#1B2A4A]/5 py-6 text-center">
         <p className="text-xs text-[#1B2A4A]/30">
-          ET AI ONE Health &middot; Bringing AI Down to Earth
+          ET AI Academy &middot; Bringing AI Down to Earth
         </p>
       </footer>
     </div>
