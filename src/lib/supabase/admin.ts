@@ -4,7 +4,7 @@
  * Use only for admin operations, webhooks, and background jobs.
  */
 import { createClient } from '@supabase/supabase-js'
-import type { USMDatabase } from '@/types/usm-database'
+import type { Database } from '@/types/database.types'
 
 export function createAdminClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -17,7 +17,7 @@ export function createAdminClient() {
     )
   }
 
-  return createClient<USMDatabase>(supabaseUrl, serviceRoleKey, {
+  return createClient<Database>(supabaseUrl, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
