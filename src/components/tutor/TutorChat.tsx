@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useChat } from '@ai-sdk/react'
 import AdaMascot, { type AdaState } from './AdaMascot'
+import { toast } from 'sonner'
 import type { ReadingLevel } from '@/lib/tutor/prompt'
 
 const STARTERS = [
@@ -50,6 +51,26 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
   }, [messages, isLoading])
 
   const ask = (content: string) => append({ role: 'user', content }, { body: { level } })
+
+  const share = async (answer: string) => {
+    try {
+      const res = await fetch('/api/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answer }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        toast.error(data?.error ?? 'Could not share that answer.')
+        return
+      }
+      const url = `${window.location.origin}${data.url}`
+      await navigator.clipboard.writeText(url)
+      toast.success('Share link copied! Anyone can open it — no account needed.')
+    } catch {
+      toast.error('Could not share that answer.')
+    }
+  }
 
   const last = messages[messages.length - 1]
   const adaState: AdaState = isLoading ? (last?.role === 'assistant' && last.content ? 'talking' : 'thinking') : 'idle'
@@ -122,6 +143,15 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
               }
             >
               <AdaText text={m.content} />
+              {m.role === 'assistant' && !!m.content && !(isLoading && m.id === last?.id) && (
+                <button
+                  type="button"
+                  onClick={() => share(m.content)}
+                  className="mt-2 block text-[11px] font-semibold text-[#C9A84C]/80 transition-colors hover:text-[#C9A84C] hover:underline"
+                >
+                  Share this answer &rarr;
+                </button>
+              )}
             </div>
           </div>
         ))}

@@ -13,6 +13,7 @@ import {
   Users,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import AdaLandingDemo from '@/components/landing/AdaLandingDemo'
 
 const platformSections = [
   {
@@ -153,6 +154,9 @@ export default function PlatformHub() {
           No credit card. No degree required. Just curiosity.
         </p>
       </section>
+
+      {/* Ada live demo */}
+      <AdaLandingDemo />
 
       {/* Platform Content Sections */}
       <section className="px-6 py-16 bg-white/60 dark:bg-gray-900">
