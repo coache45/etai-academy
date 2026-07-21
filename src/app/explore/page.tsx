@@ -62,12 +62,20 @@ export default async function ExplorePage() {
               </div>
               <span className="text-sm font-bold text-[#1B2A4A]">ET AI Academy</span>
             </Link>
-            <Link
-              href="/guides"
-              className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
-            >
-              Guides
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/me"
+                className="rounded-lg border border-[#1B2A4A]/15 px-4 py-2 text-xs font-semibold text-[#1B2A4A] transition-colors hover:bg-[#1B2A4A]/5"
+              >
+                My Progress
+              </Link>
+              <Link
+                href="/guides"
+                className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
+              >
+                Guides
+              </Link>
+            </div>
           </div>
         </div>
       </header>
