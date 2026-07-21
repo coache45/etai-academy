@@ -1,3 +1,5 @@
+// Generated from the Academy's own Supabase project (lippaasbtqsizqzjxtyq) — 2026-07-21
+// After ANY migration: regenerate via Supabase MCP generate_typescript_types and replace this file.
 export type Json =
   | string
   | number
@@ -239,6 +241,65 @@ export type Database = {
         }
         Relationships: []
       }
+      tutor_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tutor_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "tutor_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       usage_daily: {
         Row: {
           count: number
@@ -265,7 +326,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      search_academy_content: {
+        Args: { max_results?: number; query: string }
+        Returns: {
+          slug: string
+          snippet: string
+          source: string
+          title: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
