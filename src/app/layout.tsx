@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
+import Link from 'next/link'
 import PoweredByBadge from '@/components/brand/PoweredByBadge'
 import './globals.css'
 
@@ -27,7 +28,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         {children}
-        <footer className="flex justify-center py-6">
+        <footer className="flex flex-col items-center gap-2 py-6">
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-[#C9A84C]/15 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#C9A84C]">
+              Beta
+            </span>
+            <Link
+              href="/trust"
+              className="text-xs font-medium text-[#1B2A4A]/40 transition-colors hover:text-[#1B2A4A]/70 hover:underline"
+            >
+              Trust &amp; Privacy
+            </Link>
+          </div>
           <PoweredByBadge />
         </footer>
         <Toaster
