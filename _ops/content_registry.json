@@ -1,0 +1,20 @@
+{
+  "project": "etai-academy",
+  "purpose": "Fibonacci-CI content registry — Point-2 wiring for content_items (video/tutorial/station). Row count per (pillar,format) must match entries here.",
+  "wiring": {
+    "point1": "row in public.content_items (Supabase lippaasbtqsizqzjxtyq)",
+    "point2": "entry in this registry"
+  },
+  "waves": {
+    "0": "foundation — schema + plumbing only, 0 content items"
+  },
+  "coverage": {
+    "learn_ai":          { "video": 0, "tutorial": 0, "station": 0 },
+    "health_wellbeing":  { "video": 0, "tutorial": 0, "station": 0 },
+    "lifestyle":         { "video": 0, "tutorial": 0, "station": 0 },
+    "tools_tutorials":   { "video": 0, "tutorial": 0, "station": 0 },
+    "learning_stations": { "video": 0, "tutorial": 0, "station": 0 },
+    "media":             { "video": 0, "tutorial": 0, "station": 0 }
+  },
+  "items": []
+}

@@ -1,5 +1,3 @@
-// GENERATED from Supabase project lippaasbtqsizqzjxtyq (2026-07-20) via generate_typescript_types.
-// Regenerate after any schema migration on the Academy database.
 export type Json =
   | string
   | number
@@ -16,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      content_items: {
+        Row: {
+          body: Json
+          created_at: string
+          difficulty: string
+          emoji: string
+          format: string
+          id: string
+          is_published: boolean
+          pillar: string
+          slug: string
+          summary: string
+          tags: string[]
+          title: string
+          updated_at: string
+          url: string | null
+          wave: number
+        }
+        Insert: {
+          body?: Json
+          created_at?: string
+          difficulty?: string
+          emoji?: string
+          format: string
+          id?: string
+          is_published?: boolean
+          pillar?: string
+          slug: string
+          summary?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+          url?: string | null
+          wave?: number
+        }
+        Update: {
+          body?: Json
+          created_at?: string
+          difficulty?: string
+          emoji?: string
+          format?: string
+          id?: string
+          is_published?: boolean
+          pillar?: string
+          slug?: string
+          summary?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          url?: string | null
+          wave?: number
+        }
+        Relationships: []
+      }
       eli5_guides: {
         Row: {
           category: string
