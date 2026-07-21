@@ -97,6 +97,24 @@ export type Database = {
         }
         Relationships: []
       }
+      demo_usage: {
+        Row: {
+          count: number
+          day: string
+          ip_hash: string
+        }
+        Insert: {
+          count?: number
+          day?: string
+          ip_hash: string
+        }
+        Update: {
+          count?: number
+          day?: string
+          ip_hash?: string
+        }
+        Relationships: []
+      }
       eli5_guides: {
         Row: {
           category: string
@@ -241,6 +259,30 @@ export type Database = {
         }
         Relationships: []
       }
+      shares: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          question: string
+          user_id: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          question: string
+          user_id: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          question?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tutor_conversations: {
         Row: {
           created_at: string
@@ -321,11 +363,44 @@ export type Database = {
         }
         Relationships: []
       }
+      user_streaks: {
+        Row: {
+          best_streak: number
+          current_streak: number
+          last_day: string | null
+          user_id: string
+        }
+        Insert: {
+          best_streak?: number
+          current_streak?: number
+          last_day?: string | null
+          user_id: string
+        }
+        Update: {
+          best_streak?: number
+          current_streak?: number
+          last_day?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      bump_streak: { Args: { p_user_id: string }; Returns: number }
+      increment_demo: {
+        Args: { p_cap: number; p_ip_hash: string }
+        Returns: boolean
+      }
+      increment_usage: {
+        Args: { p_cap: number; p_kind: string; p_user_id: string }
+        Returns: {
+          allowed: boolean
+          new_count: number
+        }[]
+      }
       search_academy_content: {
         Args: { max_results?: number; query: string }
         Returns: {

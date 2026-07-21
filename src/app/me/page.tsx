@@ -53,6 +53,11 @@ export default async function MePage() {
     .select('*')
     .eq('user_id', user.id)
     .order('awarded_at', { ascending: true })
+  const { data: streakRow } = await supabase
+    .from('user_streaks')
+    .select('current_streak, best_streak')
+    .eq('user_id', user.id)
+    .maybeSingle()
 
   const rows = progressRows ?? []
   const badges = credRows ?? []
@@ -73,20 +78,12 @@ export default async function MePage() {
               </div>
               <span className="text-sm font-bold text-[#1B2A4A]">ET AI Academy</span>
             </Link>
-            <div className="flex items-center gap-2">
-              <Link
-                href="/tutor"
-                className="rounded-lg border border-[#C9A84C]/50 bg-[#C9A84C]/10 px-4 py-2 text-xs font-bold text-[#1B2A4A] transition-colors hover:bg-[#C9A84C]/20"
-              >
-                🤖 Ask Ada
-              </Link>
-              <Link
-                href="/explore"
-                className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
-              >
-                Explore
-              </Link>
-            </div>
+            <Link
+              href="/explore"
+              className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
+            >
+              Explore
+            </Link>
           </div>
         </div>
       </header>
@@ -120,6 +117,12 @@ export default async function MePage() {
               <p className="text-sm text-[#1B2A4A]/50">
                 {completed.length} {completed.length === 1 ? 'lesson' : 'lessons'} completed
               </p>
+              {(streakRow?.current_streak ?? 0) > 0 && (
+                <p className="mt-1 text-xs font-semibold text-[#C9A84C]">
+                  🔥 {streakRow!.current_streak}-day streak
+                  {streakRow!.best_streak > streakRow!.current_streak ? ` · best ${streakRow!.best_streak}` : ''}
+                </p>
+              )}
             </div>
           </div>
 

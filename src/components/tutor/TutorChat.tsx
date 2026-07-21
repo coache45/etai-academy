@@ -1,14 +1,23 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useChat } from '@ai-sdk/react'
 import AdaMascot, { type AdaState } from './AdaMascot'
+import type { ReadingLevel } from '@/lib/tutor/prompt'
 
 const STARTERS = [
   'What is AI, in plain words?',
   'How do I write a good prompt?',
   'Why does AI sometimes make things up?',
+]
+
+const CURIOSITY_CHIPS = ['Give me an example', 'Explain it simpler', 'Quiz me on this']
+
+const LEVEL_LABELS: Array<{ value: ReadingLevel; label: string }> = [
+  { value: 'eli5', label: 'ELI-5' },
+  { value: 'eli15', label: 'ELI-15' },
+  { value: 'expert', label: 'Expert' },
 ]
 
 /** Render Ada's plain-prose text, turning internal lesson paths into links. */
@@ -30,6 +39,7 @@ function AdaText({ text }: { text: string }) {
 }
 
 export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
+  const [level, setLevel] = useState<ReadingLevel>('eli5')
   const { messages, input, handleInputChange, handleSubmit, append, isLoading, error } = useChat({
     api: '/api/tutor',
   })
@@ -39,15 +49,18 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, isLoading])
 
+  const ask = (content: string) => append({ role: 'user', content }, { body: { level } })
+
   const last = messages[messages.length - 1]
   const adaState: AdaState = isLoading ? (last?.role === 'assistant' && last.content ? 'talking' : 'thinking') : 'idle'
+  const showChips = tutorEnabled && !isLoading && last?.role === 'assistant' && !!last.content
 
   return (
     <div className="flex h-full flex-col">
       {/* Ada header */}
       <div className="flex items-center gap-3 border-b border-[#1B2A4A]/8 bg-white px-5 py-4 rounded-t-2xl">
         <AdaMascot state={adaState} size={44} />
-        <div>
+        <div className="flex-1">
           <p className="text-sm font-black text-[#1B2A4A]">Ada</p>
           <p className="text-xs text-[#1B2A4A]/50">
             {adaState === 'thinking'
@@ -57,6 +70,23 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
                 : 'Your ELI-5 tutor — ask me anything you want to understand'}
           </p>
         </div>
+        {/* Reading-level toggle */}
+        <div className="flex rounded-full border border-[#1B2A4A]/10 bg-[#FBF8F1] p-0.5" role="group" aria-label="Reading level">
+          {LEVEL_LABELS.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setLevel(value)}
+              className={
+                level === value
+                  ? 'rounded-full bg-[#1B2A4A] px-3 py-1 text-[11px] font-bold text-white'
+                  : 'rounded-full px-3 py-1 text-[11px] font-semibold text-[#1B2A4A]/50 hover:text-[#1B2A4A]'
+              }
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Thread */}
@@ -64,14 +94,14 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
         {messages.length === 0 && (
           <div className="mx-auto max-w-md text-center">
             <p className="text-sm text-[#1B2A4A]/60">
-              Hi! I&apos;m Ada. I explain things like you&apos;re five — no jargon, no judgment.
+              Hi! I&apos;m Ada. I explain things at whatever level you pick up top — no jargon, no judgment.
             </p>
             {tutorEnabled && (
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {STARTERS.map((s) => (
                   <button
                     key={s}
-                    onClick={() => append({ role: 'user', content: s })}
+                    onClick={() => ask(s)}
                     className="rounded-full border border-[#C9A84C]/40 bg-white px-3.5 py-1.5 text-xs font-semibold text-[#1B2A4A] transition-colors hover:bg-[#C9A84C]/10"
                   >
                     {s}
@@ -95,6 +125,21 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
             </div>
           </div>
         ))}
+
+        {/* Curiosity chips — keep the loop going */}
+        {showChips && (
+          <div className="flex flex-wrap gap-2 pl-1">
+            {CURIOSITY_CHIPS.map((c) => (
+              <button
+                key={c}
+                onClick={() => ask(c)}
+                className="rounded-full border border-[#C9A84C]/40 bg-white px-3 py-1 text-[11px] font-semibold text-[#1B2A4A]/70 transition-colors hover:bg-[#C9A84C]/10 hover:text-[#1B2A4A]"
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        )}
 
         {isLoading && (!last || last.role !== 'assistant' || !last.content) && (
           <div className="flex justify-start">
@@ -120,7 +165,7 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
       {/* Composer */}
       {tutorEnabled ? (
         <form
-          onSubmit={handleSubmit}
+          onSubmit={(e) => handleSubmit(e, { body: { level } })}
           className="flex items-center gap-2 border-t border-[#1B2A4A]/8 bg-white px-4 py-3 rounded-b-2xl"
         >
           <input
