@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getEntitlements } from '@/lib/entitlements'
+import CertShareButton from '@/components/me/CertShareButton'
 
 // Per-user page — always render at request time with the signed-in user's session.
 export const dynamic = 'force-dynamic'
@@ -175,6 +176,7 @@ export default async function MePage() {
               >
                 <span className="text-xl">{b.emoji}</span>
                 <span className="text-sm font-bold text-[#1B2A4A]">{b.label}</span>
+                {ents.certificates && <CertShareButton credentialId={b.id} />}
               </div>
             ))}
           </div>

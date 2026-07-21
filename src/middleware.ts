@@ -24,6 +24,7 @@ const publicPaths = [
   '/podcast',
   '/trust',
   '/share',
+  '/cert',
 ]
 
 export async function middleware(request: NextRequest) {

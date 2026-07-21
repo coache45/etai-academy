@@ -16,6 +16,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      cert_shares: {
+        Row: {
+          awarded_at: string
+          code: string
+          created_at: string
+          emoji: string
+          id: string
+          label: string
+          learner_name: string
+          user_id: string
+        }
+        Insert: {
+          awarded_at: string
+          code: string
+          created_at?: string
+          emoji?: string
+          id?: string
+          label: string
+          learner_name: string
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          code?: string
+          created_at?: string
+          emoji?: string
+          id?: string
+          label?: string
+          learner_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       content_items: {
         Row: {
           body: Json
