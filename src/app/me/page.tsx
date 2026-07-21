@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getEntitlements } from '@/lib/entitlements'
 
 // Per-user page — always render at request time with the signed-in user's session.
 export const dynamic = 'force-dynamic'
@@ -38,7 +39,7 @@ export default async function MePage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('display_name')
+    .select('display_name, subscription_tier, subscription_status, entitlements, is_founder')
     .eq('id', user.id)
     .single()
 
@@ -64,6 +65,11 @@ export default async function MePage() {
   const completed = rows.filter((r) => r.status === 'completed')
   const { current, next, pct } = ladderFor(completed.length)
   const name = profile?.display_name || 'learner'
+  const ents = getEntitlements(profile ?? null)
+  // Payments stay dark until the owner wires Stripe: these envs are unset in all
+  // environments today, so neither the upgrade card nor the manage link renders.
+  const paymentLink = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK
+  const portalUrl = process.env.NEXT_PUBLIC_STRIPE_PORTAL_URL
 
   return (
     <div className="min-h-screen bg-[#FBF8F1]">
@@ -90,7 +96,19 @@ export default async function MePage() {
 
       <main className="mx-auto max-w-3xl px-4 py-10">
         <p className="text-sm text-[#1B2A4A]/50">Welcome back,</p>
-        <h1 className="text-3xl font-black text-[#1B2A4A]">{name}</h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-3xl font-black text-[#1B2A4A]">{name}</h1>
+          {ents.tier === 'pro' && (
+            <span className="rounded-full bg-[#C9A84C]/15 px-3 py-1 text-xs font-bold text-[#C9A84C]">
+              ✨ Pro
+            </span>
+          )}
+          {ents.founder && (
+            <span className="rounded-full border border-[#C9A84C]/40 bg-[#1B2A4A] px-3 py-1 text-xs font-bold text-[#C9A84C]">
+              🏛 Founder
+            </span>
+          )}
+        </div>
 
         {/* Learner Orientation */}
         <div className="mt-6 rounded-2xl border border-[#C9A84C]/30 bg-[#C9A84C]/5 p-5">
@@ -190,6 +208,33 @@ export default async function MePage() {
           </ul>
         )}
       </main>
+
+      {(paymentLink || (ents.tier === 'pro' && portalUrl)) && (
+        <div className="mx-auto max-w-3xl px-4 pb-4">
+          {ents.tier !== 'pro' && paymentLink && (
+            <div className="rounded-2xl border border-[#C9A84C]/30 bg-[#C9A84C]/5 p-6 text-center">
+              <p className="text-lg font-black text-[#1B2A4A]">Go Pro — $9/mo or $79/yr</p>
+              <p className="mt-1 text-sm text-[#1B2A4A]/50">
+                A much higher tutor cap, the premium 3D theme, and early access. The first 1,000
+                members lock the Founder price for life.
+              </p>
+              <a
+                href={`${paymentLink}?client_reference_id=${user.id}`}
+                className="mt-4 inline-block rounded-xl bg-[#C9A84C] px-6 py-3 text-sm font-bold text-[#1B2A4A] transition-colors hover:bg-[#d4b55a]"
+              >
+                Upgrade to Pro
+              </a>
+            </div>
+          )}
+          {ents.tier === 'pro' && portalUrl && (
+            <p className="text-center text-sm">
+              <a href={portalUrl} className="font-semibold text-[#C9A84C] hover:underline">
+                Manage your subscription &rarr;
+              </a>
+            </p>
+          )}
+        </div>
+      )}
 
       <footer className="mt-10 border-t border-[#1B2A4A]/5 py-6 text-center">
         <p className="text-xs text-[#1B2A4A]/30">ET AI Academy &middot; Bringing AI Down to Earth</p>
