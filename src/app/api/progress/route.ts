@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 
 // POST /api/progress  { item_type: 'guide'|'content', item_slug: string }
 // Records the signed-in user's completion. RLS enforces auth.uid() = user_id.
@@ -37,6 +37,15 @@ export async function POST(req: Request) {
 
   if (error) {
     return NextResponse.json({ error: 'db_error' }, { status: 500 })
+  }
+
+  // Completing a lesson counts toward the learning streak (server-role RPC; non-blocking).
+  try {
+    const service = createServiceClient()
+    const { error: streakError } = await service.rpc('bump_streak', { p_user_id: user.id })
+    if (streakError) console.error('[progress] bump_streak failed (non-blocking):', streakError)
+  } catch (e) {
+    console.error('[progress] bump_streak threw (non-blocking):', e)
   }
   return NextResponse.json({ ok: true })
 }

@@ -20,6 +20,13 @@ export default async function TutorPage() {
 
   const tutorEnabled = process.env.TUTOR_ENABLED === 'true'
 
+  const { data: streakRow } = await supabase
+    .from('user_streaks')
+    .select('current_streak')
+    .eq('user_id', user.id)
+    .maybeSingle()
+  const streak = streakRow?.current_streak ?? 0
+
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF8F1]">
       <header className="border-b border-[#1B2A4A]/5 bg-[#FBF8F1]">
@@ -34,6 +41,11 @@ export default async function TutorPage() {
               <span className="text-sm font-bold text-[#1B2A4A]">ET AI Academy</span>
             </Link>
             <div className="flex items-center gap-2">
+              {streak > 0 && (
+                <span className="rounded-full bg-[#C9A84C]/15 px-3 py-1.5 text-xs font-bold text-[#C9A84C]">
+                  🔥 {streak}
+                </span>
+              )}
               <Link
                 href="/me"
                 className="rounded-lg border border-[#1B2A4A]/15 px-4 py-2 text-xs font-semibold text-[#1B2A4A] transition-colors hover:bg-[#1B2A4A]/5"

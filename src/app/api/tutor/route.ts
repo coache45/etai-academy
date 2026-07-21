@@ -16,7 +16,7 @@ import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getEntitlements } from '@/lib/entitlements'
 import { checkAndIncrementUsage } from '@/lib/usage'
 import { moderateInput, MAX_INPUT_CHARS } from '@/lib/tutor/moderation'
-import { buildAdaSystemPrompt, type AcademySource } from '@/lib/tutor/prompt'
+import { buildAdaSystemPrompt, READING_LEVELS, type AcademySource, type ReadingLevel } from '@/lib/tutor/prompt'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
@@ -42,8 +42,10 @@ export async function POST(req: Request) {
 
   // Parse the useChat body.
   let messages: ChatMessage[] = []
+  let level: ReadingLevel = 'eli5'
   try {
     const body = await req.json()
+    if (READING_LEVELS.includes(body?.level)) level = body.level as ReadingLevel
     messages = (body?.messages ?? [])
       .filter((m: ChatMessage) => m && (m.role === 'user' || m.role === 'assistant'))
       .map((m: ChatMessage) => ({ role: m.role, content: String(m.content ?? '') }))
@@ -88,6 +90,13 @@ export async function POST(req: Request) {
       "Ada can't help with that one — she sticks to friendly, safe learning questions. Try asking about something you'd like to understand!"
     )
   }
+
+  // Learning streak: a real (allowed, moderated) tutor question counts as today's activity.
+  service
+    .rpc('bump_streak', { p_user_id: user.id })
+    .then(({ error }) => {
+      if (error) console.error('[tutor] bump_streak failed (non-blocking):', error)
+    })
 
   // 5. Grounding: full-text search over the Academy's own published lessons.
   let sources: AcademySource[] = []
@@ -139,7 +148,7 @@ export async function POST(req: Request) {
   // 6. Ada answers, streamed.
   const result = await streamText({
     model: anthropic(process.env.TUTOR_MODEL ?? 'claude-haiku-4-5'),
-    system: buildAdaSystemPrompt(sources, profile?.display_name),
+    system: buildAdaSystemPrompt(sources, profile?.display_name, level),
     messages,
     maxTokens: 1024,
     temperature: 0.6,
