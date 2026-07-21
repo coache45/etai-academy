@@ -101,24 +101,36 @@ const ecosystemApps = [
 export default function PlatformHub() {
   return (
     <div className="min-h-screen bg-[#FBF8F1] dark:bg-gray-950">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#C9A84C] rounded-lg flex items-center justify-center">
-            <Zap className="w-5 h-5 text-[#1B2A4A]" />
+      {/* Deep-space brand canvas: nav + hero (palette from the ET AI commercial) */}
+      <div className="bg-space-hero">
+      <nav className="relative z-10 flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-gradient-to-br from-[#F49E08] to-[#C9A84C] rounded-lg flex items-center justify-center shadow-[0_0_18px_rgba(244,158,8,0.35)]">
+            <Zap className="w-5 h-5 text-[#061233]" />
           </div>
-          <span className="font-bold text-[#1B2A4A] dark:text-white">ET AI Academy</span>
+          <span className="text-lg font-black tracking-tight">
+            <span className="text-gold-gradient">ET</span>{' '}
+            <span className="text-ai-gradient">AI</span>{' '}
+            <span className="text-white/90 font-bold">Academy</span>
+          </span>
         </div>
-        <div className="flex items-center gap-3">
-          <Link href="/guides" className="hidden sm:block">
-            <Button variant="ghost" className="text-[#1B2A4A] dark:text-white text-sm">
+        <div className="flex items-center gap-1.5">
+          <div className="hidden md:flex items-center gap-1.5">
+            <Link href="/guides" className="rounded-lg px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white">
               Guides
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button variant="ghost" className="text-[#1B2A4A] dark:text-white text-sm">
-              Sign In
-            </Button>
+            </Link>
+            <Link href="/explore" className="rounded-lg px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white">
+              Explore
+            </Link>
+            <Link href="/tutor" className="rounded-lg px-3.5 py-2 text-sm font-semibold text-[#7FD6FF] transition-colors hover:bg-[#00B3ED]/15 hover:text-white">
+              🤖 Ask Ada
+            </Link>
+            <Link href="/podcast" className="rounded-lg px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white">
+              O-Spot
+            </Link>
+          </div>
+          <Link href="/login" className="rounded-lg px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white">
+            Sign In
           </Link>
           <Link href="/signup">
             <Button variant="gold">Get Started</Button>
@@ -126,37 +138,54 @@ export default function PlatformHub() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative px-6 py-20 text-center max-w-4xl mx-auto">
-        <ImmersiveHero />
-        <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 text-[#1B2A4A] dark:text-[#C9A84C] text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-          <Zap className="w-4 h-4" />
-          Bringing AI Down to Earth
+      {/* Hero — Bringing AI Down to Earth */}
+      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-16 pt-10 lg:pt-14">
+        <div className="grid items-center gap-10 lg:grid-cols-12">
+          <div className="text-center lg:col-span-7 lg:text-left">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00B3ED]/30 bg-[#00B3ED]/10 px-4 py-1.5 text-sm font-medium text-[#7FD6FF]">
+              <Zap className="w-4 h-4 text-[#F49E08]" />
+              Bringing AI Down to Earth
+            </div>
+            <h1 className="mb-6 text-5xl font-black leading-tight text-white md:text-6xl">
+              Learn anything.
+              <br />
+              <span className="text-gold-gradient glow-gold">Understand</span>{' '}
+              <span className="text-ai-gradient glow-electric">everything.</span>
+            </h1>
+            <p className="mx-auto mb-8 max-w-xl text-xl leading-relaxed text-white/60 lg:mx-0">
+              ET AI Academy is where AI stops being scary and starts being useful. Free guides, a
+              personal AI tutor, and a community that speaks plain English — not tech jargon.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+              <Link href="/guides">
+                <Button variant="gold" size="lg" className="gap-2">
+                  Start Learning Free <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="lg" className="border border-white/25 bg-white/5 text-white hover:bg-white/10">
+                  Create Account
+                </Button>
+              </Link>
+            </div>
+            <p className="mt-4 text-xs text-white/30">
+              No credit card. No degree required. Just curiosity.
+            </p>
+            {/* Holographic badges */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              <span className="holo-badge"><span>🎓 130+ free ELI-5 lessons</span></span>
+              <span className="holo-badge"><span>🤖 Ada — your personal AI tutor</span></span>
+              <span className="holo-badge"><span>🌍 Plain English, always</span></span>
+            </div>
+          </div>
+          <div className="hidden lg:col-span-5 lg:block">
+            <div className="h-[440px] w-full">
+              <ImmersiveHero />
+            </div>
+          </div>
         </div>
-        <h1 className="text-5xl md:text-6xl font-bold text-[#1B2A4A] dark:text-white leading-tight mb-6">
-          Learn anything.
-          <span className="text-[#C9A84C]"> Understand everything.</span>
-        </h1>
-        <p className="text-xl text-[#1B2A4A]/60 dark:text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-          ET AI Academy is where AI stops being scary and starts being useful. Free guides, real
-          tools, and a community that speaks plain English — not tech jargon.
-        </p>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <Link href="/guides">
-            <Button variant="gold" size="lg" className="gap-2">
-              Start Learning Free <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-          <Link href="/signup">
-            <Button variant="outline" size="lg">
-              Create Account
-            </Button>
-          </Link>
-        </div>
-        <p className="text-xs text-[#1B2A4A]/30 mt-4">
-          No credit card. No degree required. Just curiosity.
-        </p>
       </section>
+      </div>
 
       {/* Ada live demo */}
       <Reveal>

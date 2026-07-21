@@ -9,34 +9,35 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const HoloCanvas = dynamic(() => import('./HoloCanvas'), { ssr: false, loading: () => null })
 
 /**
- * Decorative hero layer: the holographic knot + a GSAP ScrollTrigger scrub that
- * drifts/fades it as you scroll into the content. Renders NOTHING under
- * prefers-reduced-motion or below lg screens (mobile pays zero cost).
- * aria-hidden + pointer-events-none: purely visual, content stays semantic.
+ * Contained hero hologram column (NOT an overlay — it lives in its own grid
+ * column so it can never cover the headline). Shows the WebGL circuit-Earth on
+ * capable desktop browsers; a static CSS glow-orb fallback under reduced
+ * motion; nothing below lg (mobile pays zero WebGL cost — the hero's CSS
+ * starfield carries the look there). GSAP adds a subtle scroll drift.
  */
 export default function ImmersiveHero() {
   const wrap = useRef<HTMLDivElement>(null)
-  const [show, setShow] = useState(false)
+  const [mode, setMode] = useState<'webgl' | 'static' | 'hidden'>('hidden')
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const wide = window.matchMedia('(min-width: 1024px)').matches
-    setShow(!reduced && wide)
+    if (!wide) setMode('hidden')
+    else if (reduced) setMode('static')
+    else setMode('webgl')
   }, [])
 
   useEffect(() => {
-    if (!show || !wrap.current) return
+    if (mode !== 'webgl' || !wrap.current) return
     gsap.registerPlugin(ScrollTrigger)
     const tween = gsap.to(wrap.current, {
-      yPercent: 30,
-      scale: 0.8,
-      opacity: 0.2,
-      rotate: 10,
+      yPercent: 14,
+      opacity: 0.5,
       ease: 'none',
       scrollTrigger: {
         trigger: document.body,
         start: 'top top',
-        end: '55% top',
+        end: '45% top',
         scrub: 0.6,
       },
     })
@@ -44,17 +45,27 @@ export default function ImmersiveHero() {
       tween.scrollTrigger?.kill()
       tween.kill()
     }
-  }, [show])
+  }, [mode])
 
-  if (!show) return null
+  if (mode === 'hidden') return null
+
+  if (mode === 'static') {
+    return (
+      <div aria-hidden="true" className="pointer-events-none relative h-full w-full">
+        <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(0,179,237,0.35) 0%, rgba(10,114,210,0.15) 45%, transparent 70%)',
+            boxShadow: '0 0 120px 30px rgba(0,179,237,0.12)',
+          }}
+        />
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl">🌍</span>
+      </div>
+    )
+  }
 
   return (
-    <div
-      ref={wrap}
-      aria-hidden="true"
-      className="pointer-events-none absolute right-[-30px] top-[-20px] hidden lg:block"
-      style={{ width: 380, height: 380 }}
-    >
+    <div ref={wrap} aria-hidden="true" className="pointer-events-none h-full w-full">
       <HoloCanvas />
     </div>
   )
