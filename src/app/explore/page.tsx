@@ -8,36 +8,25 @@ export const dynamic = 'force-dynamic'
 
 function ContentCard({ item }: { item: ContentItem }) {
   const fmt = FORMAT_CONFIG[item.format]
-  const inner = (
-    <>
+  return (
+    <Link
+      href={`/explore/${item.slug}`}
+      className="group flex flex-col rounded-2xl border border-[#1B2A4A]/8 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-[#C9A84C]/30 hover:-translate-y-0.5"
+    >
       <div className="mb-3 flex items-start justify-between">
         <span className="text-4xl">{item.emoji}</span>
         <span className="rounded-full bg-[#C9A84C]/15 px-2.5 py-0.5 text-[10px] font-bold text-[#C9A84C]">
           {fmt.emoji} {fmt.label}
         </span>
       </div>
-      <h3 className="text-lg font-bold text-[#1B2A4A]">{item.title}</h3>
+      <h3 className="text-lg font-bold text-[#1B2A4A] group-hover:text-[#C9A84C] transition-colors">
+        {item.title}
+      </h3>
       <p className="mt-1 flex-1 text-sm text-[#1B2A4A]/50 line-clamp-2">{item.summary}</p>
-    </>
-  )
-  const base =
-    'group flex flex-col rounded-2xl border border-[#1B2A4A]/8 bg-white p-6 shadow-sm transition-all'
-
-  if (item.url) {
-    return (
-      <Link href={item.url} className={`${base} hover:shadow-md hover:border-[#C9A84C]/30 hover:-translate-y-0.5`}>
-        {inner}
-        <span className="mt-4 text-xs font-medium text-[#C9A84C] opacity-0 transition-opacity group-hover:opacity-100">
-          Open &rarr;
-        </span>
-      </Link>
-    )
-  }
-  return (
-    <div className={base}>
-      {inner}
-      <span className="mt-4 text-xs font-medium text-[#1B2A4A]/30">Coming soon</span>
-    </div>
+      <span className="mt-4 text-xs font-medium text-[#C9A84C] opacity-0 transition-opacity group-hover:opacity-100">
+        Open &rarr;
+      </span>
+    </Link>
   )
 }
 
