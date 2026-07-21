@@ -73,12 +73,20 @@ export default async function MePage() {
               </div>
               <span className="text-sm font-bold text-[#1B2A4A]">ET AI Academy</span>
             </Link>
-            <Link
-              href="/explore"
-              className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
-            >
-              Explore
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/tutor"
+                className="rounded-lg border border-[#C9A84C]/50 bg-[#C9A84C]/10 px-4 py-2 text-xs font-bold text-[#1B2A4A] transition-colors hover:bg-[#C9A84C]/20"
+              >
+                🤖 Ask Ada
+              </Link>
+              <Link
+                href="/explore"
+                className="rounded-lg bg-[#1B2A4A] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#1B2A4A]/90"
+              >
+                Explore
+              </Link>
+            </div>
           </div>
         </div>
       </header>
