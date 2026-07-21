@@ -89,7 +89,7 @@ export default function HoloCanvas() {
       dpr={[1, 1.75]}
       camera={{ position: [0, 0.3, 4.6], fov: 42 }}
       gl={{ antialias: true, alpha: true }}
-      style={{ background: 'transparent' }}
+      style={{ background: 'transparent', mixBlendMode: 'screen' }}
     >
       <CircuitEarth />
       <EffectComposer>

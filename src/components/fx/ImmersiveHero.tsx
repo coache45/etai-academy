@@ -65,7 +65,16 @@ export default function ImmersiveHero() {
   }
 
   return (
-    <div ref={wrap} aria-hidden="true" className="pointer-events-none h-full w-full">
+    <div
+      ref={wrap}
+      aria-hidden="true"
+      className="pointer-events-none h-full w-full"
+      style={{
+        // Soft radial fade so the canvas edges melt into the starfield.
+        maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 55%, transparent 82%)',
+        WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 55%, transparent 82%)',
+      }}
+    >
       <HoloCanvas />
     </div>
   )
