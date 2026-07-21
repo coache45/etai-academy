@@ -34,7 +34,9 @@ export default async function TutorPage() {
     .select('subscription_tier, subscription_status, entitlements, is_founder')
     .eq('id', user.id)
     .maybeSingle()
-  const premium = getEntitlements(profRow ?? null).premiumTheme
+  const ents = getEntitlements(profRow ?? null)
+  const premium = ents.premiumTheme
+  const voiceEnabled = ents.voiceTutor
 
   return (
     <div className={`flex min-h-screen flex-col bg-[#FBF8F1]${premium ? ' theme-aurora' : ''}`}>
@@ -79,7 +81,7 @@ export default async function TutorPage() {
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-6">
         <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border border-[#1B2A4A]/8 shadow-sm" style={{ minHeight: '70vh' }}>
-          <TutorChat tutorEnabled={tutorEnabled} />
+          <TutorChat tutorEnabled={tutorEnabled} voiceEnabled={voiceEnabled} />
         </div>
         <p className="mt-3 text-center text-[11px] text-[#1B2A4A]/35">
           Ada teaches — she doesn&apos;t give personal medical or financial advice. Conversations are saved to your

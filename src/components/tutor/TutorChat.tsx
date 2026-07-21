@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useChat } from '@ai-sdk/react'
 import AdaMascot, { type AdaState } from './AdaMascot'
@@ -39,11 +39,43 @@ function AdaText({ text }: { text: string }) {
   )
 }
 
-export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
+/** Minimal typing for the Web Speech recognition API (vendor-prefixed in Chrome). */
+type SpeechRecognitionLike = {
+  lang: string
+  interimResults: boolean
+  continuous: boolean
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null
+  onend: (() => void) | null
+  onerror: (() => void) | null
+  start: () => void
+  stop: () => void
+}
+
+export default function TutorChat({
+  tutorEnabled,
+  voiceEnabled = false,
+}: {
+  tutorEnabled: boolean
+  voiceEnabled?: boolean
+}) {
   const [level, setLevel] = useState<ReadingLevel>('eli5')
-  const { messages, input, handleInputChange, handleSubmit, append, isLoading, error } = useChat({
+  const { messages, input, setInput, handleInputChange, handleSubmit, append, isLoading, error } = useChat({
     api: '/api/tutor',
   })
+  const [listening, setListening] = useState(false)
+  const [voiceReady, setVoiceReady] = useState(false)
+  const recRef = useRef<SpeechRecognitionLike | null>(null)
+
+  useEffect(() => {
+    if (!voiceEnabled) return
+    // deno-lint-ignore no-explicit-any
+    const w = window as any
+    setVoiceReady(!!(w.SpeechRecognition || w.webkitSpeechRecognition))
+    return () => {
+      recRef.current?.stop()
+      if (typeof window !== 'undefined') window.speechSynthesis?.cancel()
+    }
+  }, [voiceEnabled])
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -51,6 +83,39 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
   }, [messages, isLoading])
 
   const ask = (content: string) => append({ role: 'user', content }, { body: { level } })
+
+  const toggleMic = useCallback(() => {
+    // deno-lint-ignore no-explicit-any
+    const w = window as any
+    const Ctor = w.SpeechRecognition || w.webkitSpeechRecognition
+    if (!Ctor) return
+    if (listening) {
+      recRef.current?.stop()
+      setListening(false)
+      return
+    }
+    const rec: SpeechRecognitionLike = new Ctor()
+    rec.lang = 'en-US'
+    rec.interimResults = false
+    rec.continuous = false
+    rec.onresult = (event) => {
+      const transcript = Array.from({ length: event.results.length }, (_, i) => event.results[i][0].transcript).join(' ')
+      setInput((prev) => (prev ? `${prev} ${transcript}` : transcript))
+    }
+    rec.onend = () => setListening(false)
+    rec.onerror = () => setListening(false)
+    recRef.current = rec
+    rec.start()
+    setListening(true)
+  }, [listening, setInput])
+
+  const speak = (text: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return
+    window.speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(text)
+    u.rate = 1.02
+    window.speechSynthesis.speak(u)
+  }
 
   const share = async (answer: string) => {
     try {
@@ -144,13 +209,24 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
             >
               <AdaText text={m.content} />
               {m.role === 'assistant' && !!m.content && !(isLoading && m.id === last?.id) && (
-                <button
-                  type="button"
-                  onClick={() => share(m.content)}
-                  className="mt-2 block text-[11px] font-semibold text-[#C9A84C]/80 transition-colors hover:text-[#C9A84C] hover:underline"
-                >
-                  Share this answer &rarr;
-                </button>
+                <div className="mt-2 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => share(m.content)}
+                    className="text-[11px] font-semibold text-[#C9A84C]/80 transition-colors hover:text-[#C9A84C] hover:underline"
+                  >
+                    Share this answer &rarr;
+                  </button>
+                  {voiceEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => speak(m.content)}
+                      className="text-[11px] font-semibold text-[#0A72D2]/70 transition-colors hover:text-[#0A72D2] hover:underline"
+                    >
+                      🔊 Read aloud
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -201,10 +277,24 @@ export default function TutorChat({ tutorEnabled }: { tutorEnabled: boolean }) {
           <input
             value={input}
             onChange={handleInputChange}
-            placeholder="Ask Ada anything…"
+            placeholder={listening ? 'Listening…' : 'Ask Ada anything…'}
             maxLength={2000}
             className="flex-1 rounded-xl border border-[#1B2A4A]/15 bg-[#FBF8F1] px-4 py-2.5 text-sm text-[#1B2A4A] outline-none transition-colors focus:border-[#C9A84C]"
           />
+          {voiceEnabled && voiceReady && (
+            <button
+              type="button"
+              onClick={toggleMic}
+              aria-label={listening ? 'Stop listening' : 'Speak your question'}
+              className={`rounded-xl px-3.5 py-2.5 text-sm font-bold transition-colors ${
+                listening
+                  ? 'bg-[#00B3ED] text-white animate-pulse'
+                  : 'border border-[#00B3ED]/40 bg-[#00B3ED]/10 text-[#0A72D2] hover:bg-[#00B3ED]/20'
+              }`}
+            >
+              🎙
+            </button>
+          )}
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
