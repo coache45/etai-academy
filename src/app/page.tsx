@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import AdaLandingDemo from '@/components/landing/AdaLandingDemo'
 import Reveal from '@/components/fx/Reveal'
+import ImmersiveHero from '@/components/fx/ImmersiveHero'
 
 const platformSections = [
   {
@@ -126,7 +127,8 @@ export default function PlatformHub() {
       </nav>
 
       {/* Hero */}
-      <section className="px-6 py-20 text-center max-w-4xl mx-auto">
+      <section className="relative px-6 py-20 text-center max-w-4xl mx-auto">
+        <ImmersiveHero />
         <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 text-[#1B2A4A] dark:text-[#C9A84C] text-sm font-medium px-4 py-1.5 rounded-full mb-6">
           <Zap className="w-4 h-4" />
           Bringing AI Down to Earth

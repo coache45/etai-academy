@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import TutorChat from '@/components/tutor/TutorChat'
+import { getEntitlements } from '@/lib/entitlements'
 
 // Per-user page — always render at request time with the signed-in user's session.
 export const dynamic = 'force-dynamic'
@@ -27,8 +28,16 @@ export default async function TutorPage() {
     .maybeSingle()
   const streak = streakRow?.current_streak ?? 0
 
+  // Premium 3D theme (entitlement-gated; RLS own-row read).
+  const { data: profRow } = await supabase
+    .from('profiles')
+    .select('subscription_tier, subscription_status, entitlements, is_founder')
+    .eq('id', user.id)
+    .maybeSingle()
+  const premium = getEntitlements(profRow ?? null).premiumTheme
+
   return (
-    <div className="flex min-h-screen flex-col bg-[#FBF8F1]">
+    <div className={`flex min-h-screen flex-col bg-[#FBF8F1]${premium ? ' theme-aurora' : ''}`}>
       <header className="border-b border-[#1B2A4A]/5 bg-[#FBF8F1]">
         <div className="mx-auto max-w-3xl px-4 py-4">
           <div className="flex items-center justify-between">
@@ -41,6 +50,11 @@ export default async function TutorPage() {
               <span className="text-sm font-bold text-[#1B2A4A]">ET AI Academy</span>
             </Link>
             <div className="flex items-center gap-2">
+              {premium && (
+                <span className="rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-1.5 text-xs font-bold text-[#C9A84C]">
+                  ✨ Aurora
+                </span>
+              )}
               {streak > 0 && (
                 <span className="rounded-full bg-[#C9A84C]/15 px-3 py-1.5 text-xs font-bold text-[#C9A84C]">
                   🔥 {streak}
