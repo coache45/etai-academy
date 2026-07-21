@@ -7,19 +7,25 @@
   },
   "waves": {
     "0": "foundation — schema + plumbing only, 0 content items",
-    "1": "Cycle 1 — target 3, first item per new format"
+    "1": "Cycle 1 — target 3, first item per new format",
+    "2": "Cycle 2 — target 5, fill empty pillars (health/lifestyle/stations)"
   },
   "coverage": {
     "learn_ai":          { "video": 0, "tutorial": 0, "station": 1 },
-    "health_wellbeing":  { "video": 0, "tutorial": 0, "station": 0 },
-    "lifestyle":         { "video": 0, "tutorial": 0, "station": 0 },
+    "health_wellbeing":  { "video": 0, "tutorial": 1, "station": 1 },
+    "lifestyle":         { "video": 0, "tutorial": 1, "station": 1 },
     "tools_tutorials":   { "video": 0, "tutorial": 1, "station": 0 },
-    "learning_stations": { "video": 0, "tutorial": 0, "station": 0 },
+    "learning_stations": { "video": 0, "tutorial": 0, "station": 1 },
     "media":             { "video": 1, "tutorial": 0, "station": 0 }
   },
   "items": [
-    { "slug": "ai-basics-starter-track",            "pillar": "learn_ai",        "format": "station",  "wave": 1 },
-    { "slug": "first-ai-assistant-10-minutes",      "pillar": "tools_tutorials", "format": "tutorial", "wave": 1 },
-    { "slug": "o-spot-bringing-ai-down-to-earth",   "pillar": "media",           "format": "video",    "wave": 1 }
+    { "slug": "ai-basics-starter-track",              "pillar": "learn_ai",          "format": "station",  "wave": 1 },
+    { "slug": "first-ai-assistant-10-minutes",        "pillar": "tools_tutorials",   "format": "tutorial", "wave": 1 },
+    { "slug": "o-spot-bringing-ai-down-to-earth",     "pillar": "media",             "format": "video",    "wave": 1 },
+    { "slug": "better-sleep-starter-track",           "pillar": "health_wellbeing",  "format": "station",  "wave": 2 },
+    { "slug": "plan-balanced-meals-with-ai",          "pillar": "health_wellbeing",  "format": "tutorial", "wave": 2 },
+    { "slug": "budgeting-with-ai-simple-start",       "pillar": "lifestyle",         "format": "tutorial", "wave": 2 },
+    { "slug": "ai-for-busy-parents",                  "pillar": "lifestyle",         "format": "station",  "wave": 2 },
+    { "slug": "ai-confidence-zero-to-comfortable",    "pillar": "learning_stations", "format": "station",  "wave": 2 }
   ]
 }
