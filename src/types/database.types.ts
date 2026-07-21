@@ -137,37 +137,70 @@ export type Database = {
         }
         Relationships: []
       }
+      founder_slots: {
+        Row: {
+          cap: number
+          claimed: number
+          id: boolean
+        }
+        Insert: {
+          cap?: number
+          claimed?: number
+          id?: boolean
+        }
+        Update: {
+          cap?: number
+          claimed?: number
+          id?: boolean
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
+          current_period_end: string | null
           display_name: string | null
           email: string
+          entitlements: Json
           full_name: string | null
           id: string
+          is_founder: boolean
           onboarding_completed: boolean
+          stripe_customer_id: string | null
+          subscription_status: string
           subscription_tier: string
           updated_at: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          current_period_end?: string | null
           display_name?: string | null
           email: string
+          entitlements?: Json
           full_name?: string | null
           id: string
+          is_founder?: boolean
           onboarding_completed?: boolean
+          stripe_customer_id?: string | null
+          subscription_status?: string
           subscription_tier?: string
           updated_at?: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
+          current_period_end?: string | null
           display_name?: string | null
           email?: string
+          entitlements?: Json
           full_name?: string | null
           id?: string
+          is_founder?: boolean
           onboarding_completed?: boolean
+          stripe_customer_id?: string | null
+          subscription_status?: string
           subscription_tier?: string
           updated_at?: string
         }
@@ -202,6 +235,27 @@ export type Database = {
           percent?: number
           status?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      usage_daily: {
+        Row: {
+          count: number
+          day: string
+          kind: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          day?: string
+          kind?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          day?: string
+          kind?: string
           user_id?: string
         }
         Relationships: []
