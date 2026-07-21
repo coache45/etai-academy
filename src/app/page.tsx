@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import AdaLandingDemo from '@/components/landing/AdaLandingDemo'
+import Reveal from '@/components/fx/Reveal'
 
 const platformSections = [
   {
@@ -156,25 +157,27 @@ export default function PlatformHub() {
       </section>
 
       {/* Ada live demo */}
-      <AdaLandingDemo />
+      <Reveal>
+        <AdaLandingDemo />
+      </Reveal>
 
       {/* Platform Content Sections */}
       <section className="px-6 py-16 bg-white/60 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <Reveal className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#1B2A4A] dark:text-white mb-3">
               The Academy
             </h2>
             <p className="text-[#1B2A4A]/50 dark:text-gray-400">
               Three ways to learn. All free to start. All explained like you&apos;re five.
             </p>
-          </div>
+          </Reveal>
           <div className="grid md:grid-cols-3 gap-6">
             {platformSections.map((section) => (
               <Link
                 key={section.title}
                 href={section.href}
-                className="group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 border border-[#1B2A4A]/5"
+                className="hover-pop3d group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-lg border border-[#1B2A4A]/5"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-[#1B2A4A]/10 dark:bg-[#C9A84C]/10 rounded-xl flex items-center justify-center text-[#1B2A4A] dark:text-[#C9A84C]">
@@ -213,14 +216,14 @@ export default function PlatformHub() {
       {/* Ecosystem Apps */}
       <section className="px-6 py-16">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+          <Reveal className="text-center mb-12">
             <h2 className="text-3xl font-bold text-[#1B2A4A] dark:text-white mb-3">
               The Ecosystem
             </h2>
             <p className="text-[#1B2A4A]/50 dark:text-gray-400 max-w-xl mx-auto">
               One brand. Multiple tools. Each app does one thing really well — and they all talk to each other.
             </p>
-          </div>
+          </Reveal>
           <div className="grid sm:grid-cols-2 gap-5">
             {ecosystemApps.map((app) => (
               <a
@@ -228,7 +231,7 @@ export default function PlatformHub() {
                 href={app.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex gap-4 bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all border border-[#1B2A4A]/5 hover:border-[#C9A84C]/20"
+                className="hover-pop3d group flex gap-4 bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm hover:shadow-lg border border-[#1B2A4A]/5 hover:border-[#C9A84C]/20"
               >
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${app.color}`}
