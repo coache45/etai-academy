@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { fetchGuideBySlug } from '@/lib/guides/queries'
 import { DIFFICULTY_CONFIG, STEP_COLORS } from '@/types/guides'
 import type { GuideChapter } from '@/types/guides'
+import { MarkComplete } from '@/components/MarkComplete'
 
 interface PageProps {
   params: { slug: string }
@@ -147,6 +148,18 @@ export default async function GuideViewerPage({ params }: PageProps) {
           {guide.chapters.map((chapter, i) => (
             <ChapterCard key={i} chapter={chapter} index={i} />
           ))}
+        </div>
+
+        {/* Mark complete — records progress toward the Ladder */}
+        <div className="mt-8 flex flex-col items-center gap-2 text-center">
+          <MarkComplete itemType="guide" itemSlug={guide.slug} />
+          <p className="text-xs text-[#1B2A4A]/30">
+            Finished this lesson? Mark it complete to climb your{' '}
+            <Link href="/me" className="font-semibold text-[#C9A84C] hover:underline">
+              Ladder
+            </Link>
+            .
+          </p>
         </div>
 
         {/* Footer CTA */}
