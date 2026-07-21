@@ -30,6 +30,12 @@ export default async function ExplorePage() {
             </Link>
             <div className="flex items-center gap-2">
               <Link
+                href="/paths"
+                className="rounded-lg border border-[#1B2A4A]/15 px-4 py-2 text-xs font-semibold text-[#1B2A4A] transition-colors hover:bg-[#1B2A4A]/5"
+              >
+                🧭 Paths
+              </Link>
+              <Link
                 href="/tutor"
                 className="rounded-lg border border-[#C9A84C]/50 bg-[#C9A84C]/10 px-4 py-2 text-xs font-bold text-[#1B2A4A] transition-colors hover:bg-[#C9A84C]/20"
               >

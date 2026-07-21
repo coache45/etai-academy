@@ -122,6 +122,9 @@ export default function PlatformHub() {
             <Link href="/explore" className="rounded-lg px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white">
               Explore
             </Link>
+            <Link href="/paths" className="rounded-lg px-3.5 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white">
+              Paths
+            </Link>
             <Link href="/tutor" className="rounded-lg px-3.5 py-2 text-sm font-semibold text-[#7FD6FF] transition-colors hover:bg-[#00B3ED]/15 hover:text-white">
               🤖 Ask Ada
             </Link>

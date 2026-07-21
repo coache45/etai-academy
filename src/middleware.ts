@@ -25,6 +25,7 @@ const publicPaths = [
   '/trust',
   '/share',
   '/cert',
+  '/paths',
 ]
 
 export async function middleware(request: NextRequest) {
