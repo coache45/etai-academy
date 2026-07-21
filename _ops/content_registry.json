@@ -1,31 +1,40 @@
 {
   "project": "etai-academy",
-  "purpose": "Fibonacci-CI content registry — Point-2 wiring for content_items (video/tutorial/station). Row count per (pillar,format) must match entries here.",
+  "purpose": "Fibonacci-CI content registry — Point-2 wiring for content_items. Row count per (pillar,format) must match entries here.",
   "wiring": {
     "point1": "row in public.content_items (Supabase lippaasbtqsizqzjxtyq)",
     "point2": "entry in this registry"
   },
   "waves": {
-    "0": "foundation — schema + plumbing only, 0 content items",
-    "1": "Cycle 1 — target 3, first item per new format",
-    "2": "Cycle 2 — target 5, fill empty pillars (health/lifestyle/stations)"
+    "0": "foundation — schema only",
+    "1": "Cycle 1 — target 3",
+    "2": "Cycle 2 — target 5 (fill empty pillars)",
+    "3": "Cycle 3 — target 8 (breadth across all pillars)"
   },
   "coverage": {
-    "learn_ai":          { "video": 0, "tutorial": 0, "station": 1 },
-    "health_wellbeing":  { "video": 0, "tutorial": 1, "station": 1 },
-    "lifestyle":         { "video": 0, "tutorial": 1, "station": 1 },
-    "tools_tutorials":   { "video": 0, "tutorial": 1, "station": 0 },
-    "learning_stations": { "video": 0, "tutorial": 0, "station": 1 },
-    "media":             { "video": 1, "tutorial": 0, "station": 0 }
+    "learn_ai":          { "video": 0, "tutorial": 1, "station": 2 },
+    "health_wellbeing":  { "video": 0, "tutorial": 2, "station": 1 },
+    "lifestyle":         { "video": 0, "tutorial": 2, "station": 1 },
+    "tools_tutorials":   { "video": 0, "tutorial": 2, "station": 1 },
+    "learning_stations": { "video": 0, "tutorial": 0, "station": 2 },
+    "media":             { "video": 1, "tutorial": 1, "station": 0 }
   },
   "items": [
-    { "slug": "ai-basics-starter-track",              "pillar": "learn_ai",          "format": "station",  "wave": 1 },
-    { "slug": "first-ai-assistant-10-minutes",        "pillar": "tools_tutorials",   "format": "tutorial", "wave": 1 },
-    { "slug": "o-spot-bringing-ai-down-to-earth",     "pillar": "media",             "format": "video",    "wave": 1 },
-    { "slug": "better-sleep-starter-track",           "pillar": "health_wellbeing",  "format": "station",  "wave": 2 },
-    { "slug": "plan-balanced-meals-with-ai",          "pillar": "health_wellbeing",  "format": "tutorial", "wave": 2 },
-    { "slug": "budgeting-with-ai-simple-start",       "pillar": "lifestyle",         "format": "tutorial", "wave": 2 },
-    { "slug": "ai-for-busy-parents",                  "pillar": "lifestyle",         "format": "station",  "wave": 2 },
-    { "slug": "ai-confidence-zero-to-comfortable",    "pillar": "learning_stations", "format": "station",  "wave": 2 }
+    { "slug": "ai-basics-starter-track",           "pillar": "learn_ai",          "format": "station",  "wave": 1 },
+    { "slug": "first-ai-assistant-10-minutes",     "pillar": "tools_tutorials",   "format": "tutorial", "wave": 1 },
+    { "slug": "o-spot-bringing-ai-down-to-earth",  "pillar": "media",             "format": "video",    "wave": 1 },
+    { "slug": "better-sleep-starter-track",        "pillar": "health_wellbeing",  "format": "station",  "wave": 2 },
+    { "slug": "plan-balanced-meals-with-ai",       "pillar": "health_wellbeing",  "format": "tutorial", "wave": 2 },
+    { "slug": "budgeting-with-ai-simple-start",    "pillar": "lifestyle",         "format": "tutorial", "wave": 2 },
+    { "slug": "ai-for-busy-parents",               "pillar": "lifestyle",         "format": "station",  "wave": 2 },
+    { "slug": "ai-confidence-zero-to-comfortable", "pillar": "learning_stations", "format": "station",  "wave": 2 },
+    { "slug": "write-better-ai-prompts",           "pillar": "learn_ai",          "format": "tutorial", "wave": 3 },
+    { "slug": "understand-ai-safety-basics",       "pillar": "learn_ai",          "format": "station",  "wave": 3 },
+    { "slug": "build-a-simple-automation",         "pillar": "tools_tutorials",   "format": "station",  "wave": 3 },
+    { "slug": "organize-your-files-with-ai",       "pillar": "tools_tutorials",   "format": "tutorial", "wave": 3 },
+    { "slug": "calmer-morning-routine-with-ai",    "pillar": "health_wellbeing",  "format": "tutorial", "wave": 3 },
+    { "slug": "plan-a-trip-with-ai",               "pillar": "lifestyle",         "format": "tutorial", "wave": 3 },
+    { "slug": "curious-to-confident-week-1",       "pillar": "learning_stations", "format": "station",  "wave": 3 },
+    { "slug": "how-we-make-the-o-spot",            "pillar": "media",             "format": "tutorial", "wave": 3 }
   ]
 }
