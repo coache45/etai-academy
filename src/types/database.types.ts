@@ -68,6 +68,33 @@ export type Database = {
         }
         Relationships: []
       }
+      credentials: {
+        Row: {
+          awarded_at: string
+          code: string
+          emoji: string
+          id: string
+          label: string
+          user_id: string
+        }
+        Insert: {
+          awarded_at?: string
+          code: string
+          emoji?: string
+          id?: string
+          label: string
+          user_id: string
+        }
+        Update: {
+          awarded_at?: string
+          code?: string
+          emoji?: string
+          id?: string
+          label?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       eli5_guides: {
         Row: {
           category: string

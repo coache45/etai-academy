@@ -42,14 +42,20 @@ export default async function MePage() {
     .eq('id', user.id)
     .single()
 
-  // RLS restricts this to the signed-in user's own rows.
+  // RLS restricts these to the signed-in user's own rows.
   const { data: progressRows } = await supabase
     .from('progress')
     .select('*')
     .eq('user_id', user.id)
     .order('updated_at', { ascending: false })
+  const { data: credRows } = await supabase
+    .from('credentials')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('awarded_at', { ascending: true })
 
   const rows = progressRows ?? []
+  const badges = credRows ?? []
   const completed = rows.filter((r) => r.status === 'completed')
   const { current, next, pct } = ladderFor(completed.length)
   const name = profile?.display_name || 'learner'
@@ -81,6 +87,21 @@ export default async function MePage() {
         <p className="text-sm text-[#1B2A4A]/50">Welcome back,</p>
         <h1 className="text-3xl font-black text-[#1B2A4A]">{name}</h1>
 
+        {/* Learner Orientation */}
+        <div className="mt-6 rounded-2xl border border-[#C9A84C]/30 bg-[#C9A84C]/5 p-5">
+          <p className="text-xs font-bold uppercase tracking-wide text-[#C9A84C]">
+            New here? How the Academy works
+          </p>
+          <ol className="mt-2 grid gap-2 text-sm text-[#1B2A4A]/70 sm:grid-cols-3">
+            <li><span className="font-bold text-[#1B2A4A]">1. Explore</span> — pick a pillar that interests you.</li>
+            <li><span className="font-bold text-[#1B2A4A]">2. Learn</span> — read a guide or work a station.</li>
+            <li><span className="font-bold text-[#1B2A4A]">3. Climb</span> — mark it complete to rise on the Ladder and earn badges.</li>
+          </ol>
+          <Link href="/explore" className="mt-3 inline-block text-sm font-semibold text-[#C9A84C] hover:underline">
+            Start exploring &rarr;
+          </Link>
+        </div>
+
         {/* Ladder card */}
         <div className="mt-6 rounded-2xl border border-[#1B2A4A]/8 bg-white p-6 shadow-sm">
           <div className="flex items-center gap-4">
@@ -109,6 +130,26 @@ export default async function MePage() {
             )}
           </div>
         </div>
+
+        {/* Badges */}
+        <h2 className="mt-10 text-lg font-bold text-[#1B2A4A]">Badges</h2>
+        {badges.length === 0 ? (
+          <div className="mt-3 rounded-2xl border border-dashed border-[#1B2A4A]/10 bg-white/50 p-6 text-center text-sm text-[#1B2A4A]/40">
+            Complete your first lesson to earn a badge.
+          </div>
+        ) : (
+          <div className="mt-3 flex flex-wrap gap-3">
+            {badges.map((b) => (
+              <div
+                key={b.id}
+                className="flex items-center gap-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 px-4 py-2"
+              >
+                <span className="text-xl">{b.emoji}</span>
+                <span className="text-sm font-bold text-[#1B2A4A]">{b.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Completed list */}
         <h2 className="mt-10 text-lg font-bold text-[#1B2A4A]">Completed</h2>
