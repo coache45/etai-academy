@@ -84,3 +84,50 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+
+/* ============ Immersive layer (P4) ============ */
+/* 3D tilt container: transforms set by TiltCard via JS; children with .pop-3d lift off. */
+.tilt-3d {
+  transform-style: preserve-3d;
+  transition: transform 180ms ease-out;
+  will-change: transform;
+}
+.pop-3d {
+  display: inline-block;
+  transform: translateZ(0);
+  transition: transform 220ms ease-out;
+}
+.tilt-3d:hover .pop-3d {
+  transform: translateZ(28px) scale(1.06);
+}
+
+/* CSS-only hover pop for cards that don't need pointer tracking. */
+.hover-pop3d {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+.hover-pop3d:hover {
+  transform: perspective(700px) translateY(-4px) rotateX(1.5deg) scale(1.015);
+}
+
+/* Gentle float for decorative hero elements (CSS fallback when WebGL is absent). */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-14px) rotate(1.5deg); }
+}
+.float-slow { animation: float-slow 7s ease-in-out infinite; }
+
+/* Premium "Aurora" theme skin (entitlement-gated). */
+.theme-aurora {
+  background:
+    radial-gradient(60rem 30rem at 10% -10%, rgba(201, 168, 76, 0.10), transparent 60%),
+    radial-gradient(50rem 28rem at 110% 10%, rgba(27, 42, 74, 0.10), transparent 60%),
+    #fbf8f1;
+}
+
+/* Accessibility: kill all immersive motion for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .tilt-3d, .pop-3d, .hover-pop3d { transition: none !important; transform: none !important; }
+  .tilt-3d:hover .pop-3d, .hover-pop3d:hover { transform: none !important; }
+  .float-slow { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
