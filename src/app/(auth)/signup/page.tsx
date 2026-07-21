@@ -32,7 +32,7 @@ export default function SignupPage() {
         password,
         options: {
           data: { full_name: name },
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
       })
       if (error) throw error
@@ -49,7 +49,7 @@ export default function SignupPage() {
     const supabase = createClient()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback` },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     })
   }
 
