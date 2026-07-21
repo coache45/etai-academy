@@ -14,7 +14,7 @@ export default function NotFound() {
           This page does not exist.
         </p>
         <p className="text-sm text-gray-400 mb-8">
-          But your health journey is right where you left it.
+          But your learning is right where you left it.
         </p>
         <Link href="/">
           <Button variant="gold" size="lg">
