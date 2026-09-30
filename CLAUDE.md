@@ -8,8 +8,8 @@
 - **Production**: etai-academy.vercel.app (main branch)
 - **Brand**: Navy #1B2A4A, Gold #C9A84C — "Bringing AI Down to Earth"
 
-## Canonical location (verified 2026-06-07)
-- **Canonical working copy**: `C:\dev\etai-academy` — origin `github.com/coache45/etai-academy`, `main` @ `9c88078` (the commit the live Vercel deploy serves). `core.autocrlf=false` is set here to stop the Windows/OneDrive CRLF churn that plagues the other copies.
+## Canonical location (verified 2026-06-07 · stamp synced 2026-07-21)
+- **Canonical working copy**: `C:\dev\etai-academy` — origin `github.com/coache45/etai-academy`, `main` @ `db3851b` (live deploy — #22–#38: Upgrade + P1 entitlements + Ada + P3 magnet + middleware fix + P4 immersive [LIVE] + preview-auth/service-client fixes + P5 payments plumbing [dark until Stripe wired per _ops/RUNBOOK_Stripe_Flip_On.md]; Ada smoke-tested green, prod flip = TUTOR_ENABLED env). `core.autocrlf=false` is set here to stop the Windows/OneDrive CRLF churn that plagues the other copies.
 - **Canonical remote**: `github.com/coache45/etai-academy` (repo id 1177761765 — formerly `etai-one-health`; GitHub auto-redirects, so a clone's remote URL may read either name). Identity = repo id + commits, never the folder name.
 - **Stale copies — do NOT edit, do NOT treat as canonical** (full sweep: `Project 2 — The AI Academy/ETAI-Academy-Sweep-Report.md`):
   - `…\OneDrive\…\Projects\etai-one-health` — same repo, stuck on branch `chore/academy-cleanup`, OneDrive CRLF-corrupted. The Cowork folder "Project 2 — The AI Academy" is an empty subfolder inside it.
@@ -72,12 +72,20 @@ Do NOT blame external systems. Diagnose and fix.
 - `src/app/podcast/` — O-Spot podcast page
 - `src/app/(auth)/` — login / signup / onboarding (route group, no URL segment)
 - `src/app/auth/callback` — Supabase auth callback
+- `src/app/explore/` + `/explore/[slug]` — content_items surfaces (pillars)
+- `src/app/me/` — Ladder + badges (signed-in)
+- `src/app/tutor/` — Ada chat page (signed-in); `src/app/api/tutor/` — moderation-gated tutor API behind TUTOR_ENABLED
+- `src/app/share/[id]` — public share cards (+ edge OG image); `src/app/api/share/` — server-verified share creation
+- `src/app/api/demo/` — anonymous landing demo (atomic IP + global caps, moderation, same kill-switch)
 - `src/app/api/guides/` — guide CRUD + generation
 - `src/app/api/_archived/` — archived enterprise routes (kept, not wired)
 
 ## Key Files
-- `middleware.ts` — auth redirects and public path allowlist
+- `src/middleware.ts` — ACTIVE (fixed 2026-07-21, PR #34): session refresh + page auth redirects; publicPaths audited; `/api/*` + file-extension paths bypass via matcher (handlers self-protect). The old root middleware.ts is deleted — never recreate it there.
+- `src/components/fx/` — immersive layer (TiltCard/Reveal/ImmersiveHero/HoloCanvas). Guardrails baked in: reduced-motion + coarse-pointer inert, WebGL desktop-only + lazy, content stays semantic. Deps pinned to React-18 line (fiber@8/drei@9) — do not bump to fiber@9/drei@10 without a React upgrade plan.
 - `next.config.js` — has `ignoreBuildErrors: true` and `ignoreDuringBuilds: true`
-- `src/lib/supabase/` — Supabase clients (client / server / admin)
+- `src/lib/supabase/` — Supabase clients (client / server / admin). **createServiceClient MUST stay cookie-blind** (delegates to admin.ts; lesson 2026-07-21: cookie-sighted service clients run as the signed-in user and 42501 on server-only RPCs)
 - `src/lib/guides/` — guide queries
 - `src/lib/podcast/` — podcast config + RSS feed parsing
+- `src/lib/entitlements.ts` + `src/lib/usage.ts` — capability gates + tamper-proof daily caps (gate features here, never raw tier strings)
+- `src/lib/tutor/` — Ada system prompt + input moderation gate (fails closed; never remove)
