@@ -54,7 +54,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] dark:bg-gray-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FBF8F1] dark:bg-gray-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
@@ -149,7 +149,7 @@ export default function SignupPage() {
 
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
             Already have an account?{' '}
-            <Link href="/login" className="text-[#1E6FBF] hover:underline font-medium">
+            <Link href="/login" className="text-[#1B2A4A] underline decoration-[#C9A84C] decoration-2 underline-offset-4 hover:text-[#C9A84C] font-semibold dark:text-[#C9A84C]">
               Sign in
             </Link>
           </p>

@@ -12,9 +12,9 @@ const buttonVariants = cva(
         gold: 'bg-[#C9A84C] text-[#1B2A4A] font-semibold hover:bg-[#C9A84C]/90',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-[#1B2A4A] bg-transparent text-[#1B2A4A] hover:bg-[#1B2A4A] hover:text-white dark:border-gray-600 dark:text-white dark:hover:bg-white/10',
-        secondary: 'bg-[#1E6FBF] text-white hover:bg-[#1E6FBF]/90',
+        secondary: 'bg-[#C9A84C]/15 text-[#1B2A4A] hover:bg-[#C9A84C]/25 dark:text-[#C9A84C]',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-[#1E6FBF] underline-offset-4 hover:underline',
+        link: 'text-[#1B2A4A] underline decoration-[#C9A84C] decoration-2 underline-offset-4 hover:text-[#C9A84C] dark:text-[#C9A84C]',
       },
       size: {
         default: 'h-10 px-4 py-2',

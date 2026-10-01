@@ -22,7 +22,7 @@ const config: Config = {
           navy: '#1B2A4A',
         },
         glow: {
-          gold: '#F5C842',
+          gold: '#C9A84C',
         },
         signal: {
           blue: '#1E6FBF',
