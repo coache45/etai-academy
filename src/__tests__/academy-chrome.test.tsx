@@ -1,6 +1,6 @@
 /**
  * Chrome regression guard — the Academy is a sovereign app (2026-07-20).
- * Renders `/`, `/guides` and `/login` inside the root layout and checks the
+ * Renders `/`, `/guides`, `/login` and the 404 page inside the root layout and checks the
  * page frame (brand, nav, footer, links) is Academy-only: no "ET AI ONE"
  * branding, no Dashboard nav, no links to the retired ONE Health routes.
  * ONE Health is a separate app; `/` may link OUT to it from the Ecosystem
@@ -40,6 +40,10 @@ import RootLayout from '@/app/layout'
 import HomePage from '@/app/page'
 import GuidesPage from '@/app/guides/page'
 import LoginPage from '@/app/(auth)/login/page'
+import NotFound from '@/app/not-found'
+import { buttonVariants } from '@/components/ui/button'
+
+const OLD_PALETTE = /#F5C842|#1E6FBF|#F8F9FA/i
 
 const ONE_HEALTH_APP = 'https://etai-one-health.vercel.app'
 
@@ -57,6 +61,7 @@ const routes: Array<[string, () => Promise<string>]> = [
   ['/', async () => render(<HomePage />)],
   ['/guides', async () => render(await GuidesPage({ searchParams: {} }))],
   ['/login', async () => render(<LoginPage />)],
+  ['/not-found', async () => render(<NotFound />)],
 ]
 
 describe.each(routes)('%s chrome', (_route, renderRoute) => {
@@ -75,7 +80,7 @@ describe.each(routes)('%s chrome', (_route, renderRoute) => {
     expect(html).not.toMatch(/>\s*Dashboard\s*</i)
     expect(html).not.toMatch(/href="\/(dashboard|health|coach|studio|couples)(\/|")/)
     // Old ONE Health palette (gold #F5C842, signal blue #1E6FBF, gray #F8F9FA)
-    expect(html).not.toMatch(/#F5C842|#1E6FBF|#F8F9FA/i)
+    expect(html).not.toMatch(OLD_PALETTE)
   })
 })
 
@@ -84,4 +89,13 @@ describe('/ Ecosystem card', () => {
     const html = render(<HomePage />)
     expect(html).toContain(`href="${ONE_HEALTH_APP}"`)
   })
+})
+
+describe('Button variants', () => {
+  it.each(['default', 'gold', 'outline', 'secondary', 'link'] as const)(
+    '%s uses the Academy palette only',
+    (variant) => {
+      expect(buttonVariants({ variant })).not.toMatch(OLD_PALETTE)
+    },
+  )
 })
